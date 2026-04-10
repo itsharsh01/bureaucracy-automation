@@ -44,6 +44,17 @@ Make sure you have Python 3.9+ installed and optionally a virtual environment se
    pip install -r requirements.txt
    ```
 
+### Obtaining Data
+You can download the dataset via Kaggle using the following script:
+```python
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("kaggle/us-consumer-finance-complaints")
+
+print("Path to dataset files:", path)
+```
+
 ### Running the App
 Start the main chatbot application server by executing:
 ```bash
