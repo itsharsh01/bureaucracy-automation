@@ -129,27 +129,4 @@ Step 11  ──▶  All events streamed in parallel to CFPB Dashboard
 
 ---
 
-## ⚠️ Key Non-Functional Requirements
-
-| NFR | Target |
-|---|---|
-| Latency (end-to-end) | < 2 seconds for ML classification + routing |
-| Availability | 99.9% uptime (HA across services) |
-| Scalability | Horizontal scaling on Orchestrator + ML pods |
-| Security | TLS everywhere, JWT auth, PII masking in logs |
-| Compliance | CFPB data retention policies enforced |
-
----
-
-## 🚧 Risks & Mitigations
-
-| Risk | Mitigation |
-|---|---|
-| ML misclassification | Confidence threshold + human fallback queue |
-| Company bot unavailable | Retry + timeout + escalation flow |
-| High traffic spike | Auto-scaling + API rate limiting |
-| PII leakage in logs | Log anonymization pipeline before Dashboard |
-
----
-
 *Document prepared for internal architecture review. Subject to revision.*
