@@ -119,11 +119,11 @@ Step 11  ──▶  All events streamed in parallel to CFPB Dashboard
 |---|---|
 | Frontend | React.js / Flutter (mobile) |
 | API Gateway | AWS API Gateway / Kong |
-| Orchestrator | Python (FastAPI) / Node.js |
+| Orchestrator | Python (FastAPI)  |
 | ML Service | Python (scikit-learn, HuggingFace) |
-| Routing Engine | Python rules engine / Redis cache |
+| Routing Engine | Python rules engine  |
 | Company Gateway | REST / Webhook adapters |
-| Dashboard | React + WebSocket / Grafana |
+| Dashboard | React + WebSocket  |
 | Database | PostgreSQL (structured) + MongoDB (chat logs) |
 | Message Queue | Kafka / RabbitMQ (for async routing events) |
 
