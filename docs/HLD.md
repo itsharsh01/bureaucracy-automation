@@ -118,7 +118,6 @@ Step 11  ──▶  All events streamed in parallel to CFPB Dashboard
 | Layer | Technology |
 |---|---|
 | Frontend | React.js / Flutter (mobile) |
-| API Gateway | AWS API Gateway / Kong |
 | Orchestrator | Python (FastAPI)  |
 | ML Service | Python (scikit-learn, HuggingFace) |
 | Routing Engine | Python rules engine  |
