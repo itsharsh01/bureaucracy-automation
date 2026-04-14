@@ -8,6 +8,12 @@ except ModuleNotFoundError:
     from chatbot.router import router as chatbot_router
     from dashboard.router import router as dashboard_router
 
+from src.db.database import engine
+from src.db.base import Base
+
+# Automatically create all gathered tables on server startup (no Alembic needed)
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(title="Complaint Chatbot API")
 
 app.include_router(auth_router)

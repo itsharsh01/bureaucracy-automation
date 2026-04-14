@@ -27,7 +27,22 @@ Make sure your virtual environment is activated (you will see `(venv)` prefixing
 pip install -r requirements.txt
 ```
 
-### 3. Starting the Server
+### 3. Configure Environment Variables
+Copy the provided `.env.example` file to create your own local `.env` file. This tells the application how to connect to the Supabase PostgreSQL database:
+
+**Windows (PowerShell):**
+```powershell
+Copy-Item .env.example .env
+```
+
+**macOS/Linux:**
+```bash
+cp .env.example .env
+```
+
+After copying, open the `.env` file in your editor and replace `your_password_here` with the actual database password. The FastAPI application will automatically load these credentials using `python-dotenv`.
+
+### 4. Starting the Server
 To run the FastAPI server locally in development mode (with auto-reload enabled), execute exactly this command from the root of your project:
 ```bash
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
