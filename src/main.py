@@ -1,6 +1,18 @@
 from fastapi import FastAPI
+try:
+    from src.auth.router import router as auth_router
+    from src.chatbot.router import router as chatbot_router
+    from src.dashboard.router import router as dashboard_router
+except ModuleNotFoundError:
+    from auth.router import router as auth_router
+    from chatbot.router import router as chatbot_router
+    from dashboard.router import router as dashboard_router
 
 app = FastAPI(title="Complaint Chatbot API")
+
+app.include_router(auth_router)
+app.include_router(chatbot_router)
+app.include_router(dashboard_router)
 
 @app.get("/")
 def root():
@@ -9,3 +21,4 @@ def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
