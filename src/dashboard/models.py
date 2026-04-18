@@ -1,10 +1,17 @@
-from sqlalchemy import Column, Integer, String
-from src.db.base_class import Base
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text
+from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
 
-class DashboardMetric(Base):
-    __tablename__ = "dashboard_metrics"
+Base = declarative_base()
+
+class Complaint(Base):
+    __tablename__ = "complaints"
     __table_args__ = {"schema": "public"}
 
     id = Column(Integer, primary_key=True, index=True)
-    metric_name = Column(String, index=True)
-    metric_value = Column(Integer)
+    complaint = Column(Text, nullable=False)
+    product = Column(String, nullable=False)
+    dispute_probability = Column(Float, nullable=False)
+    confidence = Column(Float, nullable=False)
+    route_to_human = Column(Boolean, nullable=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)
