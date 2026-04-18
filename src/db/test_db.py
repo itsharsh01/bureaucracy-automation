@@ -1,16 +1,16 @@
 import sys
 import os
-
+from src.dashboard.models import Complaint
 # Ensure the project root is in sys.path so 'src' can be imported correctly
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
-
-# Import the engine and SessionLocal from database.py
 from src.db.database import engine, SessionLocal
 
-Base = declarative_base()
+
+# Import the engine and SessionLocal from database.py
+from src.db.base import Base
 
 class DummyModel(Base):
     __tablename__ = "dummy_test_table"
