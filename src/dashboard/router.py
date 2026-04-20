@@ -96,3 +96,22 @@ def get_complaint_detail(complaint_id: int, db: Session = Depends(get_db)):
         "route_to_human": result.route_to_human,
         "timestamp": result.timestamp
     }
+
+
+@router.get("/queue")
+def get_queue(db: Session = Depends(get_db)):
+    results = db.query(Complaint).order_by(Complaint.timestamp.desc()).all()
+
+    data = []
+
+    for r in results:
+        data.append({
+            "id": r.id,
+            "complaint": r.complaint[:100],  # preview
+            "product": r.product,
+            "confidence": r.confidence,
+            "status": "Auto" if not r.route_to_human else "Needs Review",
+            "timestamp": r.timestamp
+        })
+
+    return data
