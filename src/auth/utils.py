@@ -34,6 +34,40 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     
     return f"{encoded_header}.{encoded_payload}.{encoded_signature}"
 
+
+def decode_access_token(token: str) -> dict:
+    parts = token.split(".")
+    if len(parts) != 3:
+        raise ValueError("Invalid token format.")
+
+    encoded_header, encoded_payload, encoded_signature = parts
+    signing_input = f"{encoded_header}.{encoded_payload}".encode("utf-8")
+    expected_signature = hmac.new(
+        SECRET_KEY.encode("utf-8"),
+        signing_input,
+        hashlib.sha256,
+    ).digest()
+    expected_signature_str = (
+        base64.urlsafe_b64encode(expected_signature).decode("utf-8").rstrip("=")
+    )
+
+    if not hmac.compare_digest(encoded_signature, expected_signature_str):
+        raise ValueError("Invalid token signature.")
+
+    def base64url_decode(data: str) -> bytes:
+        padding = "=" * (-len(data) % 4)
+        return base64.urlsafe_b64decode(data + padding)
+
+    payload_bytes = base64url_decode(encoded_payload)
+    payload = json.loads(payload_bytes.decode("utf-8"))
+    exp = payload.get("exp")
+    if exp is None:
+        raise ValueError("Token missing expiration.")
+    if int(exp) < int(datetime.now(timezone.utc).timestamp()):
+        raise ValueError("Token has expired.")
+
+    return payload
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Mock verification for MVP without passlib."""
     return plain_password == hashed_password or plain_password + "_hashed" == hashed_password

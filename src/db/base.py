@@ -5,5 +5,5 @@ from src.db.base_class import Base
 
 # Import all models from feature packages
 from src.auth.models import User
-from src.chatbot.models import ChatSession
+from src.chatbot.models import Query
 from src.dashboard.models import Complaint
