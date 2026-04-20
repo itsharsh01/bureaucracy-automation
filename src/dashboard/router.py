@@ -63,3 +63,19 @@ def get_recent(db: Session = Depends(get_db)):
 
     return data
 
+@router.get("/manual_review")
+def get_manual_review(db: Session = Depends(get_db)):
+    results = db.query(Complaint).filter(Complaint.route_to_human == True).all()
+
+    data = []
+
+    for r in results:
+        data.append({
+            "id": r.id,
+            "complaint": r.complaint,
+            "product": r.product,
+            "confidence": r.confidence,
+            "timestamp": r.timestamp
+        })
+
+    return data
