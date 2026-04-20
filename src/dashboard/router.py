@@ -115,3 +115,28 @@ def get_queue(db: Session = Depends(get_db)):
         })
 
     return data
+
+from pydantic import BaseModel
+
+class UpdateComplaintRequest(BaseModel):
+    product: str | None = None
+    route_to_human: bool | None = None
+
+
+@router.put("/complaint/{complaint_id}")
+def update_complaint(complaint_id: int, data: UpdateComplaintRequest, db: Session = Depends(get_db)):
+    complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
+
+    if not complaint:
+        return {"error": "Complaint not found"}
+
+    if data.product is not None:
+        complaint.product = data.product
+
+    if data.route_to_human is not None:
+        complaint.route_to_human = data.route_to_human
+
+    db.commit()
+    db.refresh(complaint)
+
+    return {"message": "Complaint updated successfully"}
