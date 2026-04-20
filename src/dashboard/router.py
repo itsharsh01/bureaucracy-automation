@@ -140,3 +140,16 @@ def update_complaint(complaint_id: int, data: UpdateComplaintRequest, db: Sessio
     db.refresh(complaint)
 
     return {"message": "Complaint updated successfully"}
+
+
+@router.get("/routing")
+def get_routing():
+    routing_map = {
+        "Credit card": "Payments Team",
+        "Mortgage": "Loans Team",
+        "Bank account": "Banking Team",
+        "Debt collection": "Recovery Team",
+        "Student loan": "Education Loans Team"
+    }
+
+    return routing_map
