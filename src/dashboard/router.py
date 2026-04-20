@@ -79,3 +79,20 @@ def get_manual_review(db: Session = Depends(get_db)):
         })
 
     return data
+
+@router.get("/complaint/{complaint_id}")
+def get_complaint_detail(complaint_id: int, db: Session = Depends(get_db)):
+    result = db.query(Complaint).filter(Complaint.id == complaint_id).first()
+
+    if not result:
+        return {"error": "Complaint not found"}
+
+    return {
+        "id": result.id,
+        "complaint": result.complaint,
+        "product": result.product,
+        "dispute_probability": result.dispute_probability,
+        "confidence": result.confidence,
+        "route_to_human": result.route_to_human,
+        "timestamp": result.timestamp
+    }
