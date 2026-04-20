@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
@@ -23,6 +23,68 @@ except Exception as e:
     sys.exit(1)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def apply_schema_updates() -> None:
+    """Apply lightweight non-destructive schema updates for evolving models."""
+    with engine.begin() as connection:
+        connection.execute(
+            text(
+                """
+                DO $$
+                BEGIN
+                    IF EXISTS (
+                        SELECT 1
+                        FROM pg_type t
+                        JOIN pg_namespace n ON n.oid = t.typnamespace
+                        WHERE t.typname = 'userrole' AND n.nspname = 'public'
+                    ) THEN
+                        ALTER TYPE public.userrole ADD VALUE IF NOT EXISTS 'operator';
+                    END IF;
+                END $$;
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                ALTER TABLE IF EXISTS public.app_users
+                ADD COLUMN IF NOT EXISTS department VARCHAR
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                ALTER TABLE IF EXISTS public.app_users
+                ADD COLUMN IF NOT EXISTS company_name VARCHAR
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                ALTER TABLE IF EXISTS public.chatbot_queries
+                ADD COLUMN IF NOT EXISTS customer_id INTEGER
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                ALTER TABLE IF EXISTS public.chatbot_queries
+                ADD COLUMN IF NOT EXISTS company_response TEXT
+                """
+            )
+        )
+        connection.execute(
+            text(
+                """
+                CREATE INDEX IF NOT EXISTS ix_chatbot_queries_customer_id
+                ON public.chatbot_queries (customer_id)
+                """
+            )
+        )
 
 # Dependency for FastAPI to get DB sessions
 def get_db():

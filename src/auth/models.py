@@ -6,6 +6,7 @@ class UserRole(str, Enum):
     company = "company"
     customer = "customer"
     admin = "admin"
+    operator = "operator"
 
 class User(Base):
     __tablename__ = "app_users"
@@ -16,3 +17,5 @@ class User(Base):
     hashed_password = Column(String)
     name = Column(String, nullable=True)
     role = Column(SQLAlchemyEnum(UserRole), default=UserRole.customer)
+    department = Column(String, nullable=True)
+    company_name = Column(String, nullable=True)
